@@ -10,7 +10,6 @@ _printed = set()  # set集合，避免重复打印
 def _print_event(event: dict, _printed: set, max_length=1500):
     """
     打印事件信息，特别是对话状态和消息内容。如果消息内容过长，会进行截断处理以保证输出的可读性。
-
     参数:
         event (dict): 事件字典，包含对话状态和消息。
         _printed (set): 已打印消息的集合，用于避免重复打印。
@@ -18,6 +17,7 @@ def _print_event(event: dict, _printed: set, max_length=1500):
     """
     current_state = event.get("dialog_state")
     if current_state:
+        print('111')
         print("当前处于: ", current_state[-1])  # 输出当前的对话状态
     message = event.get("messages")
     if message:
@@ -57,7 +57,7 @@ async def main():
             # for event in events:
             #     _print_event(event, _printed)
             # 使用 astream 异步流式处理事件
-            async for event in graph.astream({'messages': ('user', question)}, config, stream_mode='values'):
+            async for event in graph.astream({'messages': ('user', question), 'dialog_state': ["center_assistant"]}, config, stream_mode='values'):
                 _print_event(event, _printed)
 
 
